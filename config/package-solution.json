@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "chart-project-euc-saas-client-side-solution",
+    "id": "0be8fa02-81ef-42bd-947c-4c26e4c69c83",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "ChartProject_EucSaas description"
+      },
+      "longDescription": {
+        "default": "ChartProject_EucSaas description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "chart-project-euc-saas Feature",
+        "description": "The feature that activates elements of the chart-project-euc-saas solution.",
+        "id": "4908a793-3ad2-49cf-ac31-799041095c14",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/chart-project-euc-saas.sppkg"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "chart-project-euc-saas",
+    "libraryId": "0be8fa02-81ef-42bd-947c-4c26e4c69c83",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "ChartProject_EucSaas",
+    "solutionShortDescription": "ChartProject_EucSaas description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
