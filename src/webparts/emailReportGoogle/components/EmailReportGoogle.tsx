@@ -73,7 +73,7 @@ export default class EmailReportGoogle extends React.Component<IEmailReportGoogl
                     
                     <table>
                       <tr>
-                        <td colSpan={8}><span style={{fontWeight:"bold"}}>Google Total :</span> {this.state.totalMailCount_google}</td>
+                        <td colSpan={8} style={{fontWeight:"bold",fontSize:22}}><span >Google Total :</span> {this.state.totalMailCount_google}</td>
                       </tr>
                       {/* <tr> */}
                         {this.state.finalArray_Google.map(column => <><tr><td width={"50%"}><span style={{fontWeight:"bold"}}>{column.SubTags} </span> </td><td> {column.occurrence}</td></tr></>)}

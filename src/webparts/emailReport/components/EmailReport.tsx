@@ -63,7 +63,7 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
           <div id='table' >
                     
                     <table>
-                      <tr><td colSpan={2}><span style={{fontWeight:"bold"}}>Total :</span> {this.state.totalMailCount}</td></tr>
+                      <tr><td colSpan={2} style={{fontWeight:"bold",fontSize:22}}><span style={{fontWeight:"bold"}}>Total :</span> {this.state.totalMailCount}</td></tr>
                      
                     </table>
                     <br></br>

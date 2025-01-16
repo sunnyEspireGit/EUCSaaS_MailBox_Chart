@@ -68,7 +68,7 @@ export default class EmailReport extends React.Component<IEmailReportMsProps, IE
                     
                     <table>
                       <tr>
-                        <td colSpan={2}><span style={{fontWeight:"bold"}}>Microsoft Total :</span> {this.state.totalMailCount_ms}</td>
+                        <td colSpan={2} style={{fontWeight:"bold",fontSize:22}}><span style={{fontWeight:"bold"}}>Microsoft Total :</span> {this.state.totalMailCount_ms}</td>
                       </tr>
                       {/* <tr> */}
                         {this.state.finalArray_MS.map(column => <><tr><td width={"50%"} ><span style={{fontWeight:"bold"}}>{column.SubTags} </span></td><td> {column.occurrence}</td></tr></>)}

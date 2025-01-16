@@ -3,7 +3,7 @@
   "solution": {
     "name": "chart-project-euc-saas-client-side-solution",
     "id": "0be8fa02-81ef-42bd-947c-4c26e4c69c83",
-    "version": "1.0.0.9",
+    "version": "1.0.0.11",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
