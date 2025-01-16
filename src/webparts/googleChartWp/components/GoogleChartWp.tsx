@@ -1,6 +1,6 @@
 import * as React from "react";
-import styles from "./ChartWp.module.scss";
-import { IChartWpProps } from "./IChartWpProps";
+import styles from "./GoogleChartWp.module.scss";
+import { IGoogleChartWpProps } from "./IGoogleChartWpProps";
 import { escape } from "@microsoft/sp-lodash-subset";
 import {
   ChartControl,
@@ -36,7 +36,7 @@ export interface IChartWpStates {
 }
 
 export default class ChartWp extends React.Component<
-  IChartWpProps,
+  IGoogleChartWpProps,
   IChartWpStates,
   {}
 > {
@@ -69,7 +69,7 @@ export default class ChartWp extends React.Component<
        
   }
 
-  public render(): React.ReactElement<IChartWpProps> {
+  public render(): React.ReactElement<IGoogleChartWpProps> {
     const {
       description,
       isDarkTheme,
@@ -80,7 +80,7 @@ export default class ChartWp extends React.Component<
 
     return (
       <section
-        className={`${styles.chartWp} ${hasTeamsContext ? styles.teams : ""}`}
+        className={`${styles.googleChartWp} ${hasTeamsContext ? styles.teams : ""}`}
       >
         <div className={styles.welcome}>
           <div>
@@ -98,7 +98,9 @@ export default class ChartWp extends React.Component<
             <table>
 
               <tr>
-                <td width={"50%"}>
+                <td width={"100%"} 
+                    // className={styles.canvas}
+                    >
                   <ChartControl
                     type={"bar"}
                     // data={{
@@ -113,6 +115,7 @@ export default class ChartWp extends React.Component<
                     className={styles.topSpace}
                     datapromise={this._loadAsyncData()}
                     options={{
+                      maintainAspectRatio: false,
                       scales: {
                         yAxes: [
                           {
@@ -132,7 +135,7 @@ export default class ChartWp extends React.Component<
                     rejectedtemplate={(error: string) => (
                       <div>Something went wrong: {error}</div>
                     )}
-                    palette={ChartPalette.OfficeColorful1}
+                    palette={ChartPalette.OfficeColorful3}
                     accessibility={{
                       alternateText:
                         "Text alternative for this canvas graphic is in the data table below.",
@@ -142,8 +145,8 @@ export default class ChartWp extends React.Component<
                     }}
                   />
                 </td>
-                <td>
-                  <ChartControl
+                {/* <td> */}
+                  {/* <ChartControl
                     type={"pie"}
                     className={styles.topSpace}
                     // data={{
@@ -176,7 +179,7 @@ export default class ChartWp extends React.Component<
                     rejectedtemplate={(error: string) => (
                       <div>Something went wrong: {error}</div>
                     )}
-                    palette={ChartPalette.OfficeColorful2}
+                    palette={ChartPalette.OfficeColorful1}
                     accessibility={{
                       alternateText:
                         "Text alternative for this canvas graphic is in the data table below.",
@@ -184,8 +187,8 @@ export default class ChartWp extends React.Component<
                         "This is the text alternative for the canvas graphic.",
                       caption: "Votes for favorite pets",
                     }}
-                  />
-                </td>
+                  />*/}
+                {/* </td>  */}
               </tr>
 
               <tr>
@@ -385,7 +388,7 @@ export default class ChartWp extends React.Component<
     // await sp.web.currentUser.get().then((r) => { this.email = r.Email; this.displayName = r.Title; });
     // this.setState({ bookedFor: this.displayName });
 
-    document.getElementById("spLeftNav").style.display ="none";
+    // document.getElementById("spLeftNav").style.display ="none";
 
     // Dialog.prompt("abc");
   }
@@ -441,17 +444,22 @@ export default class ChartWp extends React.Component<
 
     //Push all data into required array object
     let AllListData_Array: any[] = [];
-    res_AllListData_Array.forEach((element) => {
+
+    let AllListData_Array_filter = res_AllListData_Array.filter((data) => data.Tags == "Google");
+    console.log("AllListData_Array_filter : ", AllListData_Array_filter);
+
+
+    AllListData_Array_filter.forEach((element) => {
       AllListData_Array.push({
         ID: element.ID,
         text: element.Title,
-        Tag: element.Tags,
+        SubTags: element.SubTags,
       });
     });
     console.log("valueArray : ", AllListData_Array);
 
     //find duplicate items count
-    let finalset = await this.findOcc(AllListData_Array, "Tag");
+    let finalset = await this.findOcc(AllListData_Array, "SubTags");
     // this.setState({finalArrayCount : finalset});
     console.log("finalset - ", finalset);
 
@@ -461,7 +469,7 @@ export default class ChartWp extends React.Component<
     let ProductsCountArray_value: number[] = [];
 
     finalset.forEach((element) => {
-      ProductsArray_lbl.push(element.Tag);
+      ProductsArray_lbl.push(element.SubTags);
       ProductsCountArray_value.push(element.occurrence);
     });
 
@@ -469,7 +477,7 @@ export default class ChartWp extends React.Component<
       labels: ProductsArray_lbl,
       datasets: [
         {
-          label: "Products Support Mailbox Report",
+          label: "Google mails Report",
           data: ProductsCountArray_value,
         },
       ],

@@ -1,6 +1,6 @@
 import * as React from "react";
-import styles from "./ChartWp.module.scss";
-import { IChartWpProps } from "./IChartWpProps";
+import styles from "./MsChartWp.module.scss";
+import { IMsChartWpProps } from "./IMsChartWpProps";
 import { escape } from "@microsoft/sp-lodash-subset";
 import {
   ChartControl,
@@ -36,7 +36,7 @@ export interface IChartWpStates {
 }
 
 export default class ChartWp extends React.Component<
-  IChartWpProps,
+  IMsChartWpProps,
   IChartWpStates,
   {}
 > {
@@ -69,7 +69,7 @@ export default class ChartWp extends React.Component<
        
   }
 
-  public render(): React.ReactElement<IChartWpProps> {
+  public render(): React.ReactElement<IMsChartWpProps> {
     const {
       description,
       isDarkTheme,
@@ -80,7 +80,7 @@ export default class ChartWp extends React.Component<
 
     return (
       <section
-        className={`${styles.chartWp} ${hasTeamsContext ? styles.teams : ""}`}
+        className={`${styles.msChartWp} ${hasTeamsContext ? styles.teams : ""}`}
       >
         <div className={styles.welcome}>
           <div>
@@ -98,8 +98,70 @@ export default class ChartWp extends React.Component<
             <table>
 
               <tr>
-                <td width={"50%"}>
+                <td width={"100%"} 
+                // className={styles.canvas}
+                >
                   <ChartControl
+                    // id={"chart1"}
+                    type={"pie"}
+                    // data={{
+                    //   // labels: this.state.valueArrayProd,
+                    //   labels: ['SharePoint', 'OneDrive'],
+                    //   datasets: [{
+                    //     label: 'My First dataset',
+                    //     // data: this.state.valueArrayCount
+                    //     data: [20, 15]
+                    //   }]
+                    // }}
+                    className={styles.topSpace}
+                    datapromise={this._loadAsyncData_MS()}
+                    // options={
+                    //   // responsive: true,
+                    //   // maintainAspectRatio: false,
+                    //   {
+                    //   scales: {
+                    //     yAxes: [{
+                    //         ticks: {
+                    //           beginAtZero: true,
+                    //         },
+                    //       },
+                    //     ],
+                    //   },
+                    // }}
+
+                    options= {{
+                      // responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero:true
+                              }
+                          }]
+                      }}
+                  }
+
+                    loadingtemplate={() => (
+                      <Spinner
+                        size={SpinnerSize.large}
+                        label="Loading..."
+                      ></Spinner>
+                    )}
+                    rejectedtemplate={(error: string) => (
+                      <div>Something went wrong: {error}</div>
+                    )}
+                    palette={ChartPalette.OfficeColorful4}
+                    accessibility={{
+                      alternateText:
+                        "Text alternative for this canvas graphic is in the data table below.",
+                      summary:
+                        "This is the text alternative for the canvas graphic.",
+                      caption: "Votes for favorite pets",
+                    }}
+                  />
+                </td>
+                {/* <td> */}
+                {/* <ChartControl
                     type={"bar"}
                     // data={{
                     //   // labels: this.state.valueArrayProd,
@@ -111,7 +173,7 @@ export default class ChartWp extends React.Component<
                     //   }]
                     // }}
                     className={styles.topSpace}
-                    datapromise={this._loadAsyncData()}
+                    datapromise={this._loadAsyncData_Google()}
                     options={{
                       scales: {
                         yAxes: [
@@ -132,7 +194,7 @@ export default class ChartWp extends React.Component<
                     rejectedtemplate={(error: string) => (
                       <div>Something went wrong: {error}</div>
                     )}
-                    palette={ChartPalette.OfficeColorful1}
+                    palette={ChartPalette.OfficeColorful4}
                     accessibility={{
                       alternateText:
                         "Text alternative for this canvas graphic is in the data table below.",
@@ -140,52 +202,8 @@ export default class ChartWp extends React.Component<
                         "This is the text alternative for the canvas graphic.",
                       caption: "Votes for favorite pets",
                     }}
-                  />
-                </td>
-                <td>
-                  <ChartControl
-                    type={"pie"}
-                    className={styles.topSpace}
-                    // data={{
-                    //   // labels: this.state.valueArrayProd,
-                    //   labels: ['SharePoint', 'OneDrive'],
-                    //   datasets: [{
-                    //     label: 'My First dataset',
-                    //     // data: this.state.valueArrayCount
-                    //     data: [20, 15]
-                    //   }]
-                    // }}
-                    datapromise={this._loadAsyncData()}
-                    options={{
-                      scales: {
-                        yAxes: [
-                          {
-                            ticks: {
-                              beginAtZero: true,
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                    loadingtemplate={() => (
-                      <Spinner
-                        size={SpinnerSize.large}
-                        label="Loading..."
-                      ></Spinner>
-                    )}
-                    rejectedtemplate={(error: string) => (
-                      <div>Something went wrong: {error}</div>
-                    )}
-                    palette={ChartPalette.OfficeColorful2}
-                    accessibility={{
-                      alternateText:
-                        "Text alternative for this canvas graphic is in the data table below.",
-                      summary:
-                        "This is the text alternative for the canvas graphic.",
-                      caption: "Votes for favorite pets",
-                    }}
-                  />
-                </td>
+                  /> */}
+                {/* </td>  */}
               </tr>
 
               <tr>
@@ -385,7 +403,7 @@ export default class ChartWp extends React.Component<
     // await sp.web.currentUser.get().then((r) => { this.email = r.Email; this.displayName = r.Title; });
     // this.setState({ bookedFor: this.displayName });
 
-    document.getElementById("spLeftNav").style.display ="none";
+    // document.getElementById("spLeftNav").style.display ="none";
 
     // Dialog.prompt("abc");
   }
@@ -427,7 +445,7 @@ export default class ChartWp extends React.Component<
     // return this.state.selected_chartType
   }
 
-  private _loadAsyncData = async () => {
+  private _loadAsyncData_MS = async () => {
     // private getDatafromSharePointList = async () => {
     // Connection to the current context's Web
     // const sp = spfi(this.context);
@@ -441,17 +459,22 @@ export default class ChartWp extends React.Component<
 
     //Push all data into required array object
     let AllListData_Array: any[] = [];
-    res_AllListData_Array.forEach((element) => {
+
+    let AllListData_Array_filter = res_AllListData_Array.filter((data) => data.Tags == "Microsoft");
+    console.log("AllListData_Array_filter : ", AllListData_Array_filter);
+
+
+    AllListData_Array_filter.forEach((element) => {
       AllListData_Array.push({
         ID: element.ID,
         text: element.Title,
-        Tag: element.Tags,
+        SubTags: element.SubTags,
       });
     });
     console.log("valueArray : ", AllListData_Array);
 
     //find duplicate items count
-    let finalset = await this.findOcc(AllListData_Array, "Tag");
+    let finalset = await this.findOcc(AllListData_Array, "SubTags");
     // this.setState({finalArrayCount : finalset});
     console.log("finalset - ", finalset);
 
@@ -461,7 +484,7 @@ export default class ChartWp extends React.Component<
     let ProductsCountArray_value: number[] = [];
 
     finalset.forEach((element) => {
-      ProductsArray_lbl.push(element.Tag);
+      ProductsArray_lbl.push(element.SubTags);
       ProductsCountArray_value.push(element.occurrence);
     });
 
@@ -469,7 +492,7 @@ export default class ChartWp extends React.Component<
       labels: ProductsArray_lbl,
       datasets: [
         {
-          label: "Products Support Mailbox Report",
+          label: "Microsoft mails Report",
           data: ProductsCountArray_value,
         },
       ],
@@ -477,6 +500,61 @@ export default class ChartWp extends React.Component<
     return chartdata;
   }
 
+
+    private _loadAsyncData_Google = async () => {
+      // private getDatafromSharePointList = async () => {
+      // Connection to the current context's Web
+      // const sp = spfi(this.context);
+  
+      // Get all items from List
+      const res_AllListData_Array = await sp.web.lists
+        .getByTitle(GlobalConstants.lstName_productSupport)
+        .items.select("*")
+        .getAll();
+      console.log("Result : ", res_AllListData_Array);
+  
+      //Push all data into required array object
+      let AllListData_Array: any[] = [];
+  
+      let AllListData_Array_filter = res_AllListData_Array.filter((data) => data.Tags == "Google");
+      console.log("AllListData_Array_filter : ", AllListData_Array_filter);
+  
+  
+      AllListData_Array_filter.forEach((element) => {
+        AllListData_Array.push({
+          ID: element.ID,
+          text: element.Title,
+          SubTags: element.SubTags,
+        });
+      });
+      console.log("valueArray : ", AllListData_Array);
+  
+      //find duplicate items count
+      let finalset = await this.findOcc(AllListData_Array, "SubTags");
+      // this.setState({finalArrayCount : finalset});
+      console.log("finalset - ", finalset);
+  
+      // this.setState({finalArrayCount : finalset});
+  
+      let ProductsArray_lbl: string[] = [];
+      let ProductsCountArray_value: number[] = [];
+  
+      finalset.forEach((element) => {
+        ProductsArray_lbl.push(element.SubTags);
+        ProductsCountArray_value.push(element.occurrence);
+      });
+  
+      let chartdata: any = {
+        labels: ProductsArray_lbl,
+        datasets: [
+          {
+            label: "Google mails Report",
+            data: ProductsCountArray_value,
+          },
+        ],
+      };
+      return chartdata;
+    }
 
   private _loadAsyncData_1 = async() => {
     // private getDatafromSharePointList = async () => {

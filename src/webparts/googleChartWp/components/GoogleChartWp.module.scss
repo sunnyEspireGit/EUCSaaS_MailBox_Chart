@@ -1,19 +1,13 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-.chartWp {
+.googleChartWp {
   overflow: hidden;
-  width: 100% !important;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-}
-
-.topSpace
-{
-  margin-top: 10px !important;
 }
 
 .welcome {
@@ -25,10 +19,22 @@
   max-width: 420px;
 }
 
-.DropdownCss
+.topSpace
 {
-  width: 30%;
-    float: right;
+  margin-top: 10px !important;
+  // margin-top: 10px !important;
+  display: block;
+  height: 410px !important;
+  width: 560px !important;
+
+}
+
+.canvas{
+
+  display: block;
+  // height: 438px !important;
+  // width: 890px !important;
+
 }
 
 .links {

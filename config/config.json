@@ -9,11 +9,56 @@
           "manifest": "./src/webparts/chartWp/ChartWpWebPart.manifest.json"
         }
       ]
+    },
+    "email-report-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/emailReport/EmailReportWebPart.js",
+          "manifest": "./src/webparts/emailReport/EmailReportWebPart.manifest.json"
+        }
+      ]
+    },
+    "google-chart-wp-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/googleChartWp/GoogleChartWpWebPart.js",
+          "manifest": "./src/webparts/googleChartWp/GoogleChartWpWebPart.manifest.json"
+        }
+      ]
+    },
+    "ms-chart-wp-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/msChartWp/MsChartWpWebPart.js",
+          "manifest": "./src/webparts/msChartWp/MsChartWpWebPart.manifest.json"
+        }
+      ]
+    },
+    "email-report-ms-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/emailReportMs/EmailReportMsWebPart.js",
+          "manifest": "./src/webparts/emailReportMs/EmailReportMsWebPart.manifest.json"
+        }
+      ]
+    },
+    "email-report-google-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/emailReportGoogle/EmailReportGoogleWebPart.js",
+          "manifest": "./src/webparts/emailReportGoogle/EmailReportGoogleWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "ChartWpWebPartStrings": "lib/webparts/chartWp/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "EmailReportWebPartStrings": "lib/webparts/emailReport/loc/{locale}.js",
+    "GoogleChartWpWebPartStrings": "lib/webparts/googleChartWp/loc/{locale}.js",
+    "MsChartWpWebPartStrings": "lib/webparts/msChartWp/loc/{locale}.js",
+    "EmailReportMsWebPartStrings": "lib/webparts/emailReportMs/loc/{locale}.js",
+    "EmailReportGoogleWebPartStrings": "lib/webparts/emailReportGoogle/loc/{locale}.js"
   }
 }

@@ -1,7 +1,7 @@
 {
   "@microsoft/generator-sharepoint": {
     "plusBeta": false,
-    "isCreatingSolution": true,
+    "isCreatingSolution": false,
     "version": "1.14.0",
     "libraryName": "chart-project-euc-saas",
     "libraryId": "0be8fa02-81ef-42bd-947c-4c26e4c69c83",

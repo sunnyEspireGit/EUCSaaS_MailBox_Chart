@@ -1,19 +1,13 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-.chartWp {
+.emailReportMs {
   overflow: hidden;
-  width: 100% !important;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-}
-
-.topSpace
-{
-  margin-top: 10px !important;
 }
 
 .welcome {
@@ -23,12 +17,6 @@
 .welcomeImage {
   width: 100%;
   max-width: 420px;
-}
-
-.DropdownCss
-{
-  width: 30%;
-    float: right;
 }
 
 .links {

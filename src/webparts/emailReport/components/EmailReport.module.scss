@@ -1,8 +1,7 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-.chartWp {
+.emailReport {
   overflow: hidden;
-  width: 100% !important;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
@@ -11,10 +10,46 @@
   }
 }
 
-.topSpace
+#spLeftNav
 {
-  margin-top: 10px !important;
+  display: none !important;
 }
+
+nav[role='navigation'] {  
+  display: none !important;  
+}  
+div[class^='pageContainer_'] {  
+  left: 0 !important;  
+}   
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+
+table,
+th,
+td {
+  border: 1px dotted blue ;
+}
+
+thead {
+  background-color: #1c87c9;
+  color: #ffffff;
+}
+th {
+  text-align: center;
+  height: 50px;
+}
+tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+tbody tr:nth-child(even) {
+  background: #f4f4f4;
+}
+}
+
+
 
 .welcome {
   text-align: center;
@@ -23,12 +58,6 @@
 .welcomeImage {
   width: 100%;
   max-width: 420px;
-}
-
-.DropdownCss
-{
-  width: 30%;
-    float: right;
 }
 
 .links {

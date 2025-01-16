@@ -1,8 +1,7 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-.chartWp {
+.emailReportGoogle {
   overflow: hidden;
-  width: 100% !important;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
@@ -11,10 +10,6 @@
   }
 }
 
-.topSpace
-{
-  margin-top: 10px !important;
-}
 
 .welcome {
   text-align: center;
@@ -23,12 +18,6 @@
 .welcomeImage {
   width: 100%;
   max-width: 420px;
-}
-
-.DropdownCss
-{
-  width: 30%;
-    float: right;
 }
 
 .links {
