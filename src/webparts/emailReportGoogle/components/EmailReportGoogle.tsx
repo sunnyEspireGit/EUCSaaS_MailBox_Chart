@@ -97,7 +97,7 @@ export default class EmailReportGoogle extends React.Component<IEmailReportGoogl
 
   public async componentDidMount() {
     
-    this._loadAsyncData_1();
+    await this._loadAsyncData_1();
     // this.getDataFromNBHCategoryList();  
     // this.getDatafromSharePointList();   // To check users exist in which all groups
     
@@ -120,37 +120,37 @@ export default class EmailReportGoogle extends React.Component<IEmailReportGoogl
     let AllListData_Array_filter_Google = res_AllListData_Array.filter((data) => data.Tags == "Google");
     console.log("AllListData_Array_filter_Google : ", AllListData_Array_filter_Google);
 
-    let AllListData_Array_filter_MS = res_AllListData_Array.filter((data) => data.Tags == "Microsoft");
-    console.log("AllListData_Array_filter_MS : ", AllListData_Array_filter_MS);
+    // let AllListData_Array_filter_MS = res_AllListData_Array.filter((data) => data.Tags == "Microsoft");
+    // console.log("AllListData_Array_filter_MS : ", AllListData_Array_filter_MS);
     
   
     //Push all data into required array object
-    let AllListData_Array: any[] = [];
+    let AllListData_Array_google: any[] = [];
     AllListData_Array_filter_Google.forEach((element) => {
-        AllListData_Array_filter_Google.push({ ID: element.ID, text: element.Title, SubTags: element.SubTags });
+      AllListData_Array_google.push({ ID: element.ID, text: element.Title, SubTags: element.SubTags });
     });  
     
-    AllListData_Array_filter_MS.forEach((element) => {
-      AllListData_Array_filter_MS.push({ ID: element.ID, text: element.Title, SubTags: element.SubTags });
-    });  
+    // AllListData_Array_filter_MS.forEach((element) => {
+    //   AllListData_Array_filter_MS.push({ ID: element.ID, text: element.Title, SubTags: element.SubTags });
+    // });  
 
-    console.log("AllListData_Array_filter_Google : " , AllListData_Array_filter_Google);
-    console.log("AllListData_Array_filter_MS : " , AllListData_Array_filter_MS);
+    console.log("AllListData_Array_filter_Google : " , AllListData_Array_google);
+    // console.log("AllListData_Array_filter_MS : " , AllListData_Array_filter_MS);
             
             
     //find duplicate items count
-    let finalset_google = await this.findOcc(AllListData_Array_filter_Google, "SubTags") ;
-    let finalset_ms = await this.findOcc(AllListData_Array_filter_MS, "SubTags") ;
+    let finalset_google = await this.findOcc(AllListData_Array_google, "SubTags") ;
+    // let finalset_ms = await this.findOcc(AllListData_Array_filter_MS, "SubTags") ;
     // this.setState({finalArrayCount : finalset});
     console.log("finalset_google - ", finalset_google);
-    console.log("finalset_ms - ", finalset_ms);
+    // console.log("finalset_ms - ", finalset_ms);
   
   
     this.setState({
       finalArray_Google : finalset_google, 
-      finalArray_MS:finalset_ms, 
+      // finalArray_MS:finalset_ms, 
       totalMailCount_google: AllListData_Array_filter_Google.length,
-      totalMailCount_ms: AllListData_Array_filter_MS.length
+      // totalMailCount_ms: AllListData_Array_filter_MS.length
     });
   
 
