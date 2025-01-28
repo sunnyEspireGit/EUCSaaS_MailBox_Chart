@@ -23,6 +23,7 @@ import {
 } from "office-ui-fabric-react";
 // import {Dialog} from "@microsoft/sp-dialog";
 import * as GlobalConstants from "../../../helperFiles/constants";
+import { IWebPartPropertiesMetadata } from "@microsoft/sp-webpart-base";
 
 export interface IChartWpStates {
   finalArrayCount: any[];
@@ -33,13 +34,10 @@ export interface IChartWpStates {
 
   selected_chartType: ChartType;
   defaultSelected_ChartType: number;
+  newStartDateValue: any;
 }
 
-export default class ChartWp extends React.Component<
-  IChartWpProps,
-  IChartWpStates,
-  {}
-> {
+export default class ChartWp extends React.Component<IChartWpProps,IChartWpStates,{}> {
   private category = [
     { key: 0, text: "Bar" },
     { key: 1, text: "Bubble" },
@@ -63,10 +61,10 @@ export default class ChartWp extends React.Component<
       selected_chartType: "doughnut",
       defaultSelected_ChartType: 0,
       finalArray: [],
-      totalMailCount: 0
-    };
+      totalMailCount: 0,
 
-       
+      newStartDateValue:""
+    };
   }
 
   public render(): React.ReactElement<IChartWpProps> {
@@ -76,7 +74,16 @@ export default class ChartWp extends React.Component<
       environmentMessage,
       hasTeamsContext,
       userDisplayName,
+
+      startDate,
+      endDate,
+      dateRange
     } = this.props;
+
+     // Get the value from the dynamic properties
+     const startDateValue = startDate?.tryGetValue();
+     const endDateValue = endDate?.tryGetValue();
+    const dateRangeValue = dateRange?.tryGetValue();
 
     return (
       <section
@@ -94,7 +101,11 @@ export default class ChartWp extends React.Component<
               ariaLabel="Please choose chart type"
             /> */}
             </div>
-
+                 {/* <label>{startDateValue !== undefined ? new Date(startDateValue.toString()).toLocaleString() : "No StartDate selected" }</label>
+                 <br />
+                 <label>{endDateValue !== undefined ? new Date(endDateValue.toString()).toLocaleString() : "No endDate selected"}</label> 
+                 <br /> */}
+                 <label>{dateRangeValue !== undefined ? dateRangeValue : "No dateRange selected"}</label> 
             <table>
 
               <tr>
@@ -111,7 +122,7 @@ export default class ChartWp extends React.Component<
                     //   }]
                     // }}
                     className={styles.topSpace}
-                    datapromise={this._loadAsyncData()}
+                    datapromise={this._loadAsyncData(dateRangeValue)}
                     options={{
                       scales: {
                         yAxes: [
@@ -155,7 +166,7 @@ export default class ChartWp extends React.Component<
                     //     data: [20, 15]
                     //   }]
                     // }}
-                    datapromise={this._loadAsyncData()}
+                    datapromise={this._loadAsyncData(dateRangeValue)}
                     options={{
                       scales: {
                         yAxes: [
@@ -377,6 +388,12 @@ export default class ChartWp extends React.Component<
     );
   }
 
+  // public async componentDidUpdate(prevProps, prevStates) 
+  // {
+  //   console.log("componentDidUpdate startDate - ", this.props.startDate.tryGetValue);
+  // }
+
+  
   public async componentDidMount() {
     // this._loadAsyncData_1();
     // this.getDataFromNBHCategoryList();
@@ -384,11 +401,21 @@ export default class ChartWp extends React.Component<
     // //get current logged in user details
     // await sp.web.currentUser.get().then((r) => { this.email = r.Email; this.displayName = r.Title; });
     // this.setState({ bookedFor: this.displayName });
+    
+    
+    
+    // console.log("componentDidMount startDate - ", this.props.startDate.tryGetValue);
+    // this.setState({newStartDateValue : this.props.startDate.tryGetValue()});
+    
 
-    document.getElementById("spLeftNav").style.display ="none";
+
+
+    // document.getElementById("spLeftNav").style.display ="none";
 
     // Dialog.prompt("abc");
   }
+
+
 
   //onchange event of rooms dropdown - Add Recurring
   private categoryChanged = (
@@ -427,16 +454,13 @@ export default class ChartWp extends React.Component<
     // return this.state.selected_chartType
   }
 
-  private _loadAsyncData = async () => {
+  private _loadAsyncData = async (dateRangeValue) => {
     // private getDatafromSharePointList = async () => {
     // Connection to the current context's Web
     // const sp = spfi(this.context);
 
     // Get all items from List
-    const res_AllListData_Array = await sp.web.lists
-      .getByTitle(GlobalConstants.lstName_productSupport)
-      .items.select("*")
-      .getAll();
+    const res_AllListData_Array = await sp.web.lists.getByTitle(GlobalConstants.lstName_productSupport).items.select("*").getAll();
     console.log("Result : ", res_AllListData_Array);
 
     //Push all data into required array object
@@ -449,12 +473,104 @@ export default class ChartWp extends React.Component<
       });
     });
     console.log("valueArray : ", AllListData_Array);
-
+  
     //find duplicate items count
     let finalset = await this.findOcc(AllListData_Array, "Tag");
     // this.setState({finalArrayCount : finalset});
     console.log("finalset - ", finalset);
+   
+    // this.setState({finalArrayCount : finalset});
 
+    let ProductsArray_lbl: string[] = [];
+    let ProductsCountArray_value: number[] = [];
+
+    finalset.forEach((element) => {
+      ProductsArray_lbl.push(element.Tag);
+      ProductsCountArray_value.push(element.occurrence);
+    });
+
+    let chartdata: any = {
+      labels: ProductsArray_lbl,
+      datasets: [
+        {
+          label: "Products Support Mailbox Report",
+          data: ProductsCountArray_value,
+        },
+      ],
+    };
+    return chartdata;
+  }
+
+  private _loadAsyncData_2 = async (dateRangeValue) => {
+    // private getDatafromSharePointList = async () => {
+    // Connection to the current context's Web
+    // const sp = spfi(this.context);
+
+    // Get all items from List
+    const res_AllListData_Array = await sp.web.lists.getByTitle(GlobalConstants.lstName_productSupport).items.select("*").getAll();
+    console.log("Result : ", res_AllListData_Array);
+
+    const startDateVal = dateRangeValue.split(" - ")[0];
+    const endDateVal = dateRangeValue.split(" - ")[1];
+
+    console.log("startDateVal : ", startDateVal);
+    console.log("endDateVal : ", endDateVal);
+
+    const ItemsFilterByDateRange = res_AllListData_Array.filter(
+      (itm) =>
+        // {if(itm.ID == 5929){
+        new Date(
+          new Date(itm.receivedTime).getFullYear(),
+          new Date(itm.receivedTime).getMonth(),
+          new Date(itm.receivedTime).getDate(),
+          new Date(itm.receivedTime).getHours(),
+          new Date(itm.receivedTime).getMinutes(),
+          0
+        ).toISOString() > new Date(startDateVal).toISOString()  &&
+        new Date(
+          new Date(itm.receivedTime).getFullYear(),
+          new Date(itm.receivedTime).getMonth(),
+          new Date(itm.receivedTime).getDate(),
+          new Date(itm.receivedTime).getHours(),
+          new Date(itm.receivedTime).getMinutes(),
+          0
+        ).toISOString() <  new Date(endDateVal).toISOString()
+      // }}
+    );
+
+    console.log("ItemsFilterByDateRange : ", ItemsFilterByDateRange);
+
+    //Push all data into required array object
+
+    let AllListData_Array: any[] = [];
+
+    if(endDateVal !== undefined)
+    {
+      ItemsFilterByDateRange.forEach((element) => {
+        AllListData_Array.push({
+          ID: element.ID,
+          text: element.Title,
+          Tag: element.Tags,
+        });
+      });
+      console.log("valueArray : ", AllListData_Array);
+    }
+    else
+    {
+      res_AllListData_Array.forEach((element) => {
+        AllListData_Array.push({
+          ID: element.ID,
+          text: element.Title,
+          Tag: element.Tags,
+        });
+      });
+      console.log("valueArray : ", AllListData_Array);
+    }
+      //find duplicate items count
+      let finalset = await this.findOcc(AllListData_Array, "Tag");
+      // this.setState({finalArrayCount : finalset});
+      console.log("finalset - ", finalset);
+   
     // this.setState({finalArrayCount : finalset});
 
     let ProductsArray_lbl: string[] = [];

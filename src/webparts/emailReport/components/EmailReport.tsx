@@ -10,10 +10,13 @@ import {
   Item,
 } from "@pnp/sp/presets/all";
 import * as GlobalConstants from "../../../helperFiles/constants";
+import { DatePicker, PrimaryButton } from 'office-ui-fabric-react';
 
 export interface IEmailReportStates {
   finalArray: any[];
   totalMailCount : number;
+  startDate: Date;
+  endDate: Date;
 }
 
 export default class EmailReport extends React.Component<IEmailReportProps, IEmailReportStates,{}> {
@@ -22,7 +25,12 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
     super(props);
     this.state = {
       finalArray: [],
-      totalMailCount: 0
+      totalMailCount: 0,
+      // startDate: new Date(2024,0,1),
+      // endDate: new Date(2025,0,1),
+
+      startDate: null,
+      endDate: null,
     };
   }  
 
@@ -32,7 +40,10 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
       isDarkTheme,
       environmentMessage,
       hasTeamsContext,
-      userDisplayName
+      userDisplayName,
+
+      onStartDateChanged,
+      onEndDateChanged
     } = this.props;
 
     return (
@@ -62,7 +73,95 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
 
           <div id='table' >
                     
+                    <table style={{width:"50%"}}>
+                      {/* <tr>
+                        <td colSpan={1} style={{width:"25%",border:"none"}}>
+                      
+                          <DatePicker
+                            // firstDayOfWeek={firstDayOfWeek}
+                            label="Start date"
+                            minDate={new Date(2024,1,1,0,0,0,0)}
+                            placeholder="Select start date..."
+                            ariaLabel="Select start date"
+                            value={this.state.startDate}
+                            onChange={this.handleChangeStartDate}
+                            onSelectDate={(date)=>onStartDateChanged(date)}
+                            // DatePicker uses English strings by default. For localized apps, you must override this prop.
+                            // strings={defaultDatePickerStrings}
+                          />
+                          
+                        </td>
+                        <td colSpan={1} style={{width:"25%",border:"none"}}>
+                            <DatePicker
+                              // firstDayOfWeek={firstDayOfWeek}
+                              maxDate={new Date()}
+                              label="End date"
+                              placeholder="Select end date..."
+                              ariaLabel="Select end date"
+                              // DatePicker uses English strings by default. For localized apps, you must override this prop.
+                              // strings={defaultDatePickerStrings}
+                              value={this.state.endDate}
+                              onChange={this.handleChangeEndDate}
+                              onSelectDate={(date)=>onEndDateChanged(date)}
+                            />
+                        </td>
+                        <td colSpan={1} style={{border:"none"}}>
+                          {<PrimaryButton label='Apply' text='Apply'
+                                          style={{marginTop:28}}
+                                        //  onClick={this.props.applyDateValue(startDate, endDate)}
+                                      onClick={this.ApplyFilterBtnClick}
+                          >
+
+                          </PrimaryButton> }
+                        </td>
+                      </tr> */}
+
+                      <tr>
+                        <td colSpan={1} style={{width:"25%",border:"none"}}>
+                      
+                          <DatePicker
+                            // firstDayOfWeek={firstDayOfWeek}
+                            label="Start date"
+                            minDate={new Date(2024,0,1,0,0,0,0)}
+                            placeholder="Select start date..."
+                            ariaLabel="Select start date"
+                            value={this.state.startDate}
+                            // onChange={this.handleChangeStartDate}
+                            onSelectDate={(date)=>this.handleChangeStartDate(date)}
+                            // DatePicker uses English strings by default. For localized apps, you must override this prop.
+                            // strings={defaultDatePickerStrings}
+                          />
+                          
+                        </td>
+                        <td colSpan={1} style={{width:"25%",border:"none"}}>
+                            <DatePicker
+                              // firstDayOfWeek={firstDayOfWeek}
+                              maxDate={new Date()}
+                              label="End date"
+                              placeholder="Select end date..."
+                              ariaLabel="Select end date"
+                              // DatePicker uses English strings by default. For localized apps, you must override this prop.
+                              // strings={defaultDatePickerStrings}
+                              value={this.state.endDate}
+                              // onChange={this.handleChangeEndDate}
+                              onSelectDate={(date)=>this.handleChangeEndDate(date)}
+                            />
+                        </td>
+                        <td colSpan={1} style={{border:"none"}}>
+                          <PrimaryButton label='Apply' text='Apply'
+                                          style={{marginTop:28}}
+                                        //  onClick={this.props.applyDateValue(startDate, endDate)}
+                                      onClick={this.ApplyFilterBtnClick}
+                          >
+
+                          </PrimaryButton>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <br /><br />
                     <table>
+                      
                       <tr><td colSpan={2} style={{fontWeight:"bold",fontSize:22}}><span style={{fontWeight:"bold"}}>Total :</span> {this.state.totalMailCount}</td></tr>
                      
                     </table>
@@ -70,7 +169,9 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
                     <table>
                       <tr>
                         
-                        {this.state.finalArray.map(column => <><td ><span style={{fontWeight:"bold"}}>{column.Tag} :</span> {column.occurrence}</td></>)}
+                        {this.state.finalArray !== null  &&
+                        (this.state.finalArray.map(column => <><td ><span style={{fontWeight:"bold"}}>{column.Tag} :</span> {column.occurrence}</td></>))
+                        }
                       </tr>
                     </table>
                   
@@ -80,10 +181,29 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
     );
   }
 
+  private ApplyFilterBtnClick = async () => {
+    console.log("ApplyFilterBtnClick", this.state.startDate,this.state.endDate);
+    this.props.applyDateValue(this.state.startDate,this.state.endDate);
+
+    // this.setState({: []});
+    await this._loadAsyncData_1();
+  }
+
+  private handleChangeStartDate = async (date: any) => {
+    console.log("handleChangeStartDate", this.state.startDate);
+    this.setState({ startDate: date });
+  }
+
+
+  private handleChangeEndDate = async (date: any) => {
+    console.log("handleChangeEndDate", this.state.endDate);
+    this.setState({ endDate: date });
+  }
+
 
   public async componentDidMount() {
     
-    this._loadAsyncData_1();
+    await this._loadAsyncData_1();
     // this.getDataFromNBHCategoryList();  
     // this.getDatafromSharePointList();   // To check users exist in which all groups
     
@@ -102,28 +222,89 @@ export default class EmailReport extends React.Component<IEmailReportProps, IEma
     // Get all items from List
     const res_AllListData_Array = await sp.web.lists.getByTitle(GlobalConstants.lstName_productSupport).items.select("*").getAll();
     console.log("Result : " , res_AllListData_Array);
-    
-  
+
     //Push all data into required array object
     let AllListData_Array: any[] = [];
+
     res_AllListData_Array.forEach((element) => {
-        AllListData_Array.push({ ID: element.ID, text: element.Title, Tag:element.Tags });
-    });  
-    console.log("valueArray : " , AllListData_Array);
-            
-            
+      AllListData_Array.push({ ID: element.ID, text: element.Title, Tag:element.Tags });
+    });
+  
     //find duplicate items count
     let finalset = await this.findOcc(AllListData_Array, "Tag") ;
     // this.setState({finalArrayCount : finalset});
     console.log("finalset - ", finalset);
   
+    this.setState({finalArray : finalset, totalMailCount: AllListData_Array.length});
   
-    this.setState({finalArray : finalset, totalMailCount: res_AllListData_Array.length});
-  
+  }
 
-          
+  private _loadAsyncData_2 = async() => {
+      // private getDatafromSharePointList = async () => {
+      // Connection to the current context's Web
+      // const sp = spfi(this.context);
+    
+      // Get all items from List
+      const res_AllListData_Array = await sp.web.lists.getByTitle(GlobalConstants.lstName_productSupport).items.select("*").getAll();
+      console.log("Result : " , res_AllListData_Array);
   
-    }
+  
+      // console.log("this.state.startDate : " , this.state.startDate.toISOString);
+      // console.log("this.state.endDate : " , this.state.endDate.toISOString);
+  
+  
+      const ItemsFilterByDateRange = res_AllListData_Array.filter(
+        (itm) =>
+          new Date(
+            new Date(itm.receivedTime).getFullYear(),
+            new Date(itm.receivedTime).getMonth(),
+            new Date(itm.receivedTime).getDate(),
+            new Date(itm.receivedTime).getHours(),
+            new Date(itm.receivedTime).getMinutes(),
+            0
+          ).toISOString() > (this.state.startDate).toISOString()  &&
+          new Date(
+            new Date(itm.receivedTime).getFullYear(),
+            new Date(itm.receivedTime).getMonth(),
+            new Date(itm.receivedTime).getDate(),
+            new Date(itm.receivedTime).getHours(),
+            new Date(itm.receivedTime).getMinutes(),
+            0
+          ).toISOString() < (this.state.endDate).toISOString()
+       
+      );
+  
+      console.log("ItemsFilterByDateRange : ", ItemsFilterByDateRange);
+      
+    
+      //Push all data into required array object
+      let AllListData_Array: any[] = [];
+  
+      if(this.state.startDate !== null && this.state.endDate !== null)
+      {
+        ItemsFilterByDateRange.forEach((element) => {
+            AllListData_Array.push({ ID: element.ID, text: element.Title, Tag:element.Tags });
+        });  
+        console.log("valueArray : " , AllListData_Array);
+      }
+      else{
+        res_AllListData_Array.forEach((element) => {
+          AllListData_Array.push({ ID: element.ID, text: element.Title, Tag:element.Tags });
+        });
+      }
+              
+      //find duplicate items count
+      let finalset = await this.findOcc(AllListData_Array, "Tag") ;
+      // this.setState({finalArrayCount : finalset});
+      console.log("finalset - ", finalset);
+    
+    
+      this.setState({finalArray : finalset, totalMailCount: AllListData_Array.length});
+    
+  
+            
+    
+      }
 
   private findOcc = async(arr, key) => {
       let arr2 = [];
